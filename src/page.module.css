@@ -1,6 +1,16 @@
 .article {
-  width: 820px;
+  width: 1010px;
   margin: 0 auto;
+  display: flex;
+}
+
+.article main {
+  margin: 50px 0;
+  width: 608px;
+}
+
+.article aside {
+  flex: 1;
 }
 
 .article header {
@@ -14,17 +24,14 @@
 .article h1 {
   color: rgb(40, 44, 52);
   margin-bottom: 0px;
-  margin-top: 100px;
+  margin-top: 0px;
+  padding-top: 100px;
   font-size: 40px;
   line-height: 45px;
   font-weight: 700;
 }
 
-.article main {
-  margin-top: 50px;
-}
-
-.article main > p:first-child {
+.article main section:first-child p:first-of-type {
   font-size: 18px;
   font-weight: 300;
   color: #6d6d6d;
@@ -46,8 +53,7 @@
 .article h3::before {
   content: " ";
   display: block;
-  padding-top: 90px;
-  margin-top: -45px;
+  padding-top: 45px;
 }
 
 .article h4 {
@@ -142,4 +148,36 @@
   visibility: visible;
   background-color: inherit;
   border-bottom-color: inherit;
+}
+
+.article section {
+  position: relative;
+  opacity: 0.8;
+}
+
+.article section.active {
+  opacity: 0.99;
+}
+
+.article section:before {
+  /* outline: 2px solid blue; */
+  background-color: #e6e6e6;
+  height: 100%;
+  position: absolute;
+  content: "";
+  width: 300vh;
+  z-index: -1;
+  left: -100vw;
+}
+.article section.active:before {
+  background-color: white;
+}
+
+.sticker {
+  height: 350px;
+  width: 90%;
+  float: right;
+  position: -webkit-sticky;
+  position: sticky;
+  top: calc(50vh - 175px);
 }
