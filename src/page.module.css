@@ -128,3 +128,18 @@
   background: rgba(255, 229, 100, 0.2);
   color: #1a1a1a;
 }
+
+.article :global(.heading) a {
+  float: left;
+  padding-right: 4px;
+  margin-left: -20px;
+  visibility: hidden;
+  background-color: inherit;
+  border-bottom: inherit;
+  color: inherit;
+}
+.article :global(.heading):hover a {
+  visibility: visible;
+  background-color: inherit;
+  border-bottom-color: inherit;
+}

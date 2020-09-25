@@ -1,5 +1,7 @@
 import s from "./page.module.css"
 import Content from "./tutorial.mdx"
+import { MDXProvider } from "@mdx-js/react"
+import { headings } from "./headings"
 
 export { Page }
 
@@ -10,8 +12,14 @@ function Page() {
         <h1>Tutorial: Intro to React</h1>
       </header>
       <main>
-        <Content />
+        <MDXProvider components={components}>
+          <Content />
+        </MDXProvider>
       </main>
     </article>
   )
+}
+
+const components = {
+  ...headings,
 }
