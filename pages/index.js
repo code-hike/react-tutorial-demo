@@ -1,8 +1,24 @@
 import { Page } from "../src/page"
+import Head from "next/head"
 
 export default function Index() {
   return (
     <>
+      <Head>
+        <title>Tutorial: Intro to React</title>
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href="/favicon-32x32.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="16x16"
+          href="/favicon-16x16.png"
+        />
+      </Head>
       <style jsx global>
         {`
           html {

@@ -3,6 +3,10 @@ import Content from "./tutorial.mdx"
 import { MDXProvider } from "@mdx-js/react"
 import { headings } from "./headings"
 import { MiniEditor } from "@code-hike/mini-editor"
+import {
+  Scroller,
+  Step as ScrollerStep,
+} from "@code-hike/scroller"
 
 export { Page }
 
@@ -20,6 +24,7 @@ const components = {
 }
 
 function Wrapper({ children }) {
+  const [stepIndex, setIndex] = React.useState(0)
   const kids = React.Children.toArray(children)
   const sections = [[]]
   kids.forEach(kid => {
@@ -36,11 +41,20 @@ function Wrapper({ children }) {
   return (
     <article className={s.article}>
       <main>
-        {sections.map((sectionChildren, i) => (
-          <section key={i} className={i === 1 && s.active}>
-            {sectionChildren}
-          </section>
-        ))}
+        <Scroller onStepChange={setIndex}>
+          {sections.map((sectionChildren, i) => (
+            <ScrollerStep
+              as="section"
+              key={i}
+              index={i}
+              className={
+                i === stepIndex ? s.active : undefined
+              }
+            >
+              {sectionChildren}
+            </ScrollerStep>
+          ))}
+        </Scroller>
       </main>
       <aside>
         <div className={s.sticker}>

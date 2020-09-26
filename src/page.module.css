@@ -152,7 +152,8 @@
 
 .article section {
   position: relative;
-  opacity: 0.8;
+  opacity: 0.6;
+  transition: opacity 1s;
 }
 
 .article section.active {
@@ -162,10 +163,11 @@
 .article section:before {
   /* outline: 2px solid blue; */
   background-color: #e6e6e6;
+  transition: background-color 1s;
   height: 100%;
   position: absolute;
   content: "";
-  width: 300vh;
+  width: 300vw;
   z-index: -1;
   left: -100vw;
 }
