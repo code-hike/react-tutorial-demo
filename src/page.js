@@ -30,11 +30,9 @@ function Wrapper({ children }) {
   const [stepIndex, setIndex] = React.useState(0)
   const kids = React.Children.toArray(children)
   const sections = []
-  const steps = []
+  const steps = getColumnSteps(kids)
   kids.forEach(kid => {
     if (kid.props.mdxType === "Column") {
-      console.log(kid)
-      steps.push(getStep(kid))
       sections.push([])
     } else {
       sections[sections.length - 1].push(kid)
@@ -75,27 +73,65 @@ function Wrapper({ children }) {
   )
 }
 
-function getStep(element) {
-  const items = React.Children.map(
-    element.props.children,
-    element => {
-      if (element.props.mdxType === "Browser") {
-        const { id, height, ...props } = element.props
+function getColumnSteps(kids) {
+  const steps = kids
+    .filter(kid => kid.props.mdxType === "Column")
+    .map(kid => React.Children.toArray(kid.props.children))
+
+  const propsById = {}
+
+  steps.forEach((elements, stepIndex) => {
+    elements.forEach(element => {
+      const { id, height, ...props } = element.props
+      if (id == null) return
+
+      if (!(id in propsById)) {
+        propsById[id] = Array.from(steps, _ => ({}))
+      }
+
+      propsById[id][stepIndex] = props
+    })
+  })
+
+  return steps.map((elements, stepIndex) => {
+    const items = elements.map(element => {
+      const {
+        id,
+        height,
+        mdxType,
+        ...props
+      } = element.props
+      if (mdxType === "Browser") {
+        let stepsProp = propsById[id]
+        if (!stepsProp) {
+          stepsProp = Array.from(steps, _ => ({}))
+          stepsProp[stepIndex] = props
+        }
+        const defaultBrowserProps = {}
         return {
           element: (
-            <MiniBrowser {...props} steps={[{}, {}, {}]} />
+            <MiniBrowser
+              {...defaultBrowserProps}
+              steps={stepsProp}
+            />
           ),
           height,
           id,
         }
-      } else if (element.props.mdxType === "Editor") {
-        const { id, height, ...props } = element.props
+      } else if (mdxType === "Editor") {
+        let stepsProp = propsById[id]
+        if (!stepsProp) {
+          stepsProp = Array.from(steps, _ => ({}))
+          stepsProp[stepIndex] = props
+        }
+        const defaultEditorProps = {
+          style: { height: "100%" },
+        }
         return {
           element: (
             <MiniEditor
-              {...props}
-              steps={[{}, {}, {}]}
-              style={{ height: "100%" }}
+              {...defaultEditorProps}
+              steps={stepsProp}
             />
           ),
           height,
@@ -104,13 +140,11 @@ function getStep(element) {
       } else {
         return {
           element,
-          height: element.props.height,
-          id: element.props.id,
+          height,
+          id,
         }
       }
-    }
-  )
-  return {
-    items,
-  }
+    })
+    return { items }
+  })
 }
