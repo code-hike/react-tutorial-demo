@@ -1,11 +1,23 @@
-import { useRouter } from "next/router"
+export async function getStaticPaths() {
+  return {
+    paths: ["01", "02", "03", "04", "20"].map(step => ({
+      params: { step },
+    })),
+    fallback: false,
+  }
+}
 
-export default function Page({}) {
-  const { step } = useRouter().query
+export async function getStaticProps({ params }) {
+  return {
+    props: {
+      step: params.step,
+    },
+  }
+}
 
+export default function Page({ step }) {
   if (!step) return null
 
-  console.log(useRouter().query)
   const { Game } = require(`../../src/demo/game.${step}`)
   return (
     <div>
