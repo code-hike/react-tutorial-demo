@@ -5,6 +5,7 @@
     "@code-hike/mini-browser": "0.2.1",
     "@code-hike/mini-editor": "0.2.1",
     "@code-hike/smooth-column": "0.2.1",
+    "@code-hike/scroller": "0.2.1",
     "@emotion/core": "10.0.7",
     "@mdx-js/loader": "^1.6.5",
     "@mdx-js/react": "^1.0.6",
