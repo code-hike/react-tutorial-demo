@@ -24,6 +24,11 @@ function Page() {
 const components = {
   ...headings,
   wrapper: Wrapper,
+  code: Code,
+}
+
+function Code(props) {
+  return <code {...props} className="code" />
 }
 
 function Wrapper({ children }) {
@@ -124,6 +129,9 @@ function getColumnSteps(kids) {
           stepsProp = Array.from(steps, _ => ({}))
           stepsProp[stepIndex] = props
         }
+        stepsProp[stepIndex].code = getCode(
+          stepsProp[stepIndex].code
+        )
         const defaultEditorProps = {
           style: { height: "100%" },
         }
@@ -147,4 +155,14 @@ function getColumnSteps(kids) {
     })
     return { items }
   })
+}
+function getCode(fileName) {
+  const code = require(`!!raw-loader!./demo/${fileName}`)
+    .default
+  if (fileName.startsWith("game")) {
+    const lines = code.split("\n")
+    return lines.slice(2, -2).join("\n")
+  } else {
+    return code
+  }
 }

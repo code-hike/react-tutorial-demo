@@ -6,7 +6,7 @@
 
 .article main {
   margin: 50px 0;
-  width: 608px;
+  width: 508px;
 }
 
 .article aside {
@@ -121,7 +121,7 @@
   border-bottom-color: #1a1a1a;
 }
 
-.article code {
+.article :global(.code) {
   padding: 0 3px;
   font-size: 0.94em;
   word-break: break-word;

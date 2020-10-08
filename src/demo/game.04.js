@@ -1,7 +1,6 @@
 import { useState } from "react"
 
 function Square(props) {
-  // TODO: remove the useState call
   const [value, setValue] = useState(null)
 
   return (
@@ -26,8 +25,6 @@ function Board() {
   const status = "Next player: X"
 
   return (
-    // TODO: use onClick={props.onClick}
-    // TODO: replace value with props.value
     <div>
       <div className="status">{status}</div>
       <div className="board-row">

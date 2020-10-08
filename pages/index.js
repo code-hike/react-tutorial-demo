@@ -66,6 +66,10 @@ export default function Index() {
             display: inline-block;
             vertical-align: top;
           }
+
+          .ch-editor-body {
+            padding: 5px 0px !important;
+          }
         `}
       </style>
       <Page />
