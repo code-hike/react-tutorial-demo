@@ -3,7 +3,7 @@ import s from "./note.module.css"
 export function Note({ height }) {
   return (
     <div className={s.container} style={{ height }}>
-      <h2>About This Tutorial</h2>
+      <h2 className={s.title}>About this tutorial</h2>
       <p>This tutorial was built as a demo of Code Hike.</p>
       <p>
         The original content and style come from the
@@ -11,16 +11,25 @@ export function Note({ height }) {
         Hooks".
       </p>
       <div>
-        <a href="https://reactjs.org/tutorial/tutorial.html">
+        <a
+          href="https://reactjs.org/tutorial/tutorial.html"
+          className={s.link}
+        >
           Official Intro to React <Arrow />
         </a>
-        <a href="https://reactwithhooks.netlify.app/tutorial/tutorial.html">
+        <a
+          href="https://reactwithhooks.netlify.app/tutorial/tutorial.html"
+          className={s.link}
+        >
           React with Hooks <Arrow />
         </a>
-        <a href="https://codehike.org">
+        <a href="https://codehike.org" className={s.link}>
           Code Hike <Arrow />
         </a>
-        <a href="https://github.com/code-hike/react-tutorial-demo">
+        <a
+          href="https://github.com/code-hike/react-tutorial-demo"
+          className={s.link}
+        >
           Source Code <Arrow />
         </a>
       </div>

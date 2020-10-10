@@ -11,27 +11,27 @@
   flex-flow: column;
 }
 
-.container h2 {
+.container h2.title {
   color: #61dafb;
 }
 
 .container h2::before {
-  content: none;
+  content: none !important;
 }
 
 .container p {
-  line-height: 1.4;
-  margin: 0;
+  line-height: 1.4 !important;
+  margin: 0 !important;
 }
 
-.container a {
+.container a.link {
   display: block;
   background-color: initial;
   color: #61dafb;
   border: none;
   margin: 0.3em 0;
 }
-.container a:hover {
+.container a.link:hover {
   display: block;
   background-color: initial;
   color: white;
