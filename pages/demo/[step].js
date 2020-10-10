@@ -80,6 +80,7 @@ export default function Page({ step }) {
           .game {
             display: flex;
             flex-direction: row;
+            justify-content: center;
           }
 
           .game-info {
