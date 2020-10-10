@@ -33,16 +33,20 @@ function Code(props) {
 
 function Wrapper({ children }) {
   const [stepIndex, setIndex] = React.useState(0)
-  const kids = React.Children.toArray(children)
-  const sections = []
-  const steps = getColumnSteps(kids)
-  kids.forEach(kid => {
-    if (kid.props.mdxType === "Column") {
-      sections.push([])
-    } else {
-      sections[sections.length - 1].push(kid)
-    }
-  })
+
+  const [sections, steps] = React.useMemo(() => {
+    const kids = React.Children.toArray(children)
+    const sections = []
+    const steps = getColumnSteps(kids)
+    kids.forEach(kid => {
+      if (kid.props.mdxType === "Column") {
+        sections.push([])
+      } else {
+        sections[sections.length - 1].push(kid)
+      }
+    })
+    return [sections, steps]
+  }, [children])
 
   const [progress] = useSpring(stepIndex)
 
