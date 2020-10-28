@@ -1,16 +1,14 @@
 import { useState } from "react"
 
 function Square() {
-  return <button className="square">{/* TODO */}</button>
+  return <button className="square"></button>
 }
 
 function Board() {
   function renderSquare(i) {
     return <Square />
   }
-
   const status = "Next player: X"
-
   return (
     <div>
       <div className="status">{status}</div>
