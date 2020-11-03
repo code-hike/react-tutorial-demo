@@ -137,7 +137,7 @@ function getColumnSteps(kids) {
           stepsProp[stepIndex].code
         )
         const defaultEditorProps = {
-          style: { height: "100%" },
+          // style: { height: "100%" },
         }
         return {
           element: (
