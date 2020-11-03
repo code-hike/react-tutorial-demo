@@ -49,6 +49,7 @@ function Wrapper({ children }) {
   }, [children])
 
   const [progress] = useSpring(stepIndex)
+  const backward = stepIndex < progress
 
   return (
     <article className={s.article}>
@@ -75,6 +76,7 @@ function Wrapper({ children }) {
             steps={steps}
             padding={10}
             progress={progress}
+            backward={backward}
           />
         </div>
       </aside>
