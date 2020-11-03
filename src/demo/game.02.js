@@ -8,9 +8,7 @@ function Board() {
   function renderSquare(i) {
     return <Square value={i} />
   }
-
   const status = "Next player: X"
-
   return (
     <div>
       <div className="status">{status}</div>
