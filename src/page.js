@@ -48,7 +48,12 @@ function Wrapper({ children }) {
     return [sections, steps]
   }, [children])
 
-  const [progress] = useSpring(stepIndex)
+  const [progress] = useSpring(stepIndex, {
+    decimals: 3,
+    stiffness: 90,
+    damping: 30,
+    mass: 3,
+  })
   const backward = stepIndex < progress
 
   return (
