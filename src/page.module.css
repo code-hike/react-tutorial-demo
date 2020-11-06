@@ -152,18 +152,17 @@
 
 .article section {
   position: relative;
-  opacity: 0.6;
-  transition: opacity 1s;
+  opacity: 0.1;
+  transition: opacity 0.6s;
 }
 
 .article section.active {
   opacity: 0.99;
 }
 
-.article section:before {
-  /* outline: 2px solid blue; */
-  background-color: #e6e6e6;
-  transition: background-color 1s;
+/* .article section:before {
+  background-color: #596273;
+  transition: background-color 0.3s;
   height: 100%;
   position: absolute;
   content: "";
@@ -173,7 +172,7 @@
 }
 .article section.active:before {
   background-color: white;
-}
+} */
 
 .sticker {
   height: 100vh;
