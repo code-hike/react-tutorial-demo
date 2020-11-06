@@ -19,7 +19,7 @@ function Board() {
   )
 
   function renderSquare(i) {
-    return <Square value={i} />
+    return <Square value={squares[i]} />
   }
 
   const status = "Next player: X"

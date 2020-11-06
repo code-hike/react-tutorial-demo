@@ -1,14 +1,9 @@
 import { useState } from "react"
 
 function Square(props) {
-  const [value, setValue] = useState(null)
-
   return (
-    <button
-      className="square"
-      onClick={() => setValue("X")}
-    >
-      {value}
+    <button className="square" onClick={props.onClick}>
+      {props.value}
     </button>
   )
 }
@@ -19,7 +14,7 @@ function Board() {
   )
 
   function renderSquare(i) {
-    return <Square value={i} />
+    return <Square value={squares[i]} />
   }
 
   const status = "Next player: X"

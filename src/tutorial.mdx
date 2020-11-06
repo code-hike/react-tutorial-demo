@@ -221,6 +221,31 @@ The Square component renders a single `<button>` and the Board renders 9 squares
 
 <Column>
   <Editor
+    code="game.01.js"
+    file="index.js"
+    lang="jsx"
+    height={300}
+    id="editor"
+    focus="1:8"
+  />
+  <Browser
+    style={{ height: "100%" }}
+    height={200}
+    url="/demo/01"
+    id="browser"
+  />
+</Column>
+
+### Passing Data Through Props {#passing-data-through-props}
+
+To get our feet wet, let's try passing some data from our Board component to our Square component.
+
+We strongly recommend typing code by hand as you're working through the tutorial and not using copy/paste. This will help you develop muscle memory and a stronger understanding.
+
+In Board's `renderSquare` function, change the code to pass a prop called `value` to the Square.
+
+<Column>
+  <Editor
     code="game.02.js"
     file="index.js"
     lang="jsx"
@@ -236,15 +261,7 @@ The Square component renders a single `<button>` and the Board renders 9 squares
   />
 </Column>
 
-### Passing Data Through Props {#passing-data-through-props}
-
-To get our feet wet, let's try passing some data from our Board component to our Square component.
-
-We strongly recommend typing code by hand as you're working through the tutorial and not using copy/paste. This will help you develop muscle memory and a stronger understanding.
-
-In Board's `renderSquare` function, change the code to pass a prop called `value` to the Square.
-
-Change Square's return value to show that value by replacing `{/* TODO */}` with `{props.value}`.
+Change Square's return value to show that value with `{props.value}`.
 
 You should see a number in each square in the rendered output.
 
@@ -339,7 +356,8 @@ When you call a setter function like `setValue` in a component, React automatica
 
 <Column>
   <Editor
-    code="game.06.js"
+    code="game.05.js"
+    focus="15:21"
     file="index.js"
     lang="jsx"
     height={300}
@@ -348,7 +366,7 @@ When you call a setter function like `setValue` in a component, React automatica
   <Browser
     style={{ height: "100%" }}
     height={200}
-    url="/demo/06"
+    url="/demo/05"
     id="browser"
   />
 </Column>
@@ -365,24 +383,28 @@ We may think that Board should just ask each Square for the Square's state. Alth
 
 **To collect data from multiple children, or to have two child components communicate with each other, you need to declare the shared state in their parent component instead. The parent component can pass the state back down to the children by using props; this keeps the child components in sync with each other and with the parent component.**
 
+<Column>
+  <Editor
+    code="game.06.js"
+    focus="15:21"
+    file="index.js"
+    lang="jsx"
+    height={300}
+    id="editor"
+  />
+  <Browser
+    style={{ height: "100%" }}
+    height={200}
+    url="/demo/06"
+    id="browser"
+  />
+</Column>
+
 Lifting state into a parent component is common when React components are refactored -- let's take this opportunity to try it out.
 
-Add a `useState` call to the Board and set a state value called `squares` to start out with an array of 9 nulls corresponding to the 9 squares:
+Add a `useState` call to the Board and set a state value called `squares` to start out with an array of 9 nulls corresponding to the 9 squares.
 
-```javascript{2}
-function Board() {
-  const [squares, setSquares] = useState(Array(9).fill(null));
-
-  renderSquare(i) {
-    return <Square value={i} />;
-  }
-```
-
-When we fill the board in later, the `squares` array will look something like this:
-
-```javascript
-;["O", null, "X", "X", "X", "O", "O", null, null]
-```
+When we fill the board in later, the `squares` array will look something like `["O", null, "X", "X", "X", "O", "O", null, null]`.
 
 The Board's `renderSquare` function currently looks like this:
 
@@ -392,38 +414,68 @@ function renderSquare(i) {
 }
 ```
 
+<Column>
+  <Editor
+    code="game.07.js"
+    focus="15:21"
+    file="index.js"
+    lang="jsx"
+    height={300}
+    id="editor"
+  />
+  <Browser
+    style={{ height: "100%" }}
+    height={200}
+    url="/demo/06"
+    id="browser"
+  />
+</Column>
+
 In the beginning, we [passed the `value` prop down](#passing-data-through-props) from the Board to show numbers from 0 to 8 in every Square. In a different previous step, we replaced the numbers with an "X" mark [determined by Square's own state](#making-an-interactive-component). This is why Square currently ignores the `value` prop passed to it by the Board.
 
-We will now use the prop passing mechanism again. We will modify the Board to instruct each individual Square about its current value (`'X'`, `'O'`, or `null`). We have already defined the `squares` array in the Board's constructor, and we will modify the Board's `renderSquare`unction to read from it:
-
-```javascript{2}
-function renderSquare(i) {
-  return <Square value={squares[i]} />
-}
-```
+We will now use the prop passing mechanism again. We will modify the Board to instruct each individual Square about its current value (`'X'`, `'O'`, or `null`). We have already defined the `squares` array in the Board's constructor, and we will modify the Board's `renderSquare` function to read from it.
 
 **[View the full code at this point](https://codepen.io/kickstartcoding/pen/bGVvjaO?editors=0010)**
+
+<Column>
+  <Editor
+    code="game.07.js"
+    focus="1:11"
+    file="index.js"
+    lang="jsx"
+    height={300}
+    id="editor"
+  />
+  <Browser
+    style={{ height: "100%" }}
+    height={200}
+    url="/demo/06"
+    id="browser"
+  />
+</Column>
 
 Each Square will now receive a `value` prop that will either be `'X'`, `'O'`, or `null` for empty squares.
 
 Next, we need to change what happens when a Square is clicked. The Board component now maintains which squares are filled. We need to create a way for the Square to update the Board's state. Since state is considered to be private to a component that defines it, we cannot update the Board's state directly from Square.
 
-Instead, we'll pass down a function from the Board to the Square, and we'll have Square call that function when a square is clicked. We'll change `renderSquare` in Board to:
+Instead, we'll pass down a function from the Board to the Square, and we'll have Square call that function when a square is clicked.
 
-```javascript{5}
-function renderSquare(i) {
-  return (
-    <Square
-      value={squares[i]}
-      onClick={() => handleClick(i)}
-    />
-  )
-}
-```
-
-> Note
->
-> We split the returned element into multiple lines for readability, and added parentheses so that JavaScript doesn't insert a semicolon after `return` and break our code.
+<Column>
+  <Editor
+    code="game.08.js"
+    focus="1:11"
+    file="index.js"
+    lang="jsx"
+    height={300}
+    id="editor"
+  />
+  <Browser
+    style={{ height: "100%" }}
+    height={200}
+    url="/demo/06"
+    id="browser"
+  />
+</Column>
 
 Now we're passing down two props from Board to Square: `value` and `onClick`. The `onClick` prop is a function that Square can call when clicked. We'll make the following changes to Square:
 
@@ -431,22 +483,26 @@ Now we're passing down two props from Board to Square: `value` and `onClick`. Th
 - Replace `setValue` with `props.onClick` in Square's JSX
 - Delete the `useState` call from Square because Square no longer keeps track of the game's state
 
-After these changes, the Square component looks like this:
+When a Square is clicked, the `onClick` function provided by the Board is called.
 
-```javascript{1,2,5,7}
-function Square(props) {
-  return (
-    <button
-      className="square"
-      onClick={() => props.onClick()}
-    >
-      {props.value}
-    </button>
-  )
-}
-```
+<Column>
+  <Editor
+    code="game.08.js"
+    focus="1:30"
+    file="index.js"
+    lang="jsx"
+    height={400}
+    id="editor"
+  />
+  <Browser
+    style={{ height: "100%" }}
+    height={200}
+    url="/demo/06"
+    id="browser"
+  />
+</Column>
 
-When a Square is clicked, the `onClick` function provided by the Board is called. Here's a review of how this is achieved:
+Here's a review of how this is achieved:
 
 1. The `onClick` prop on the built-in DOM `<button>` component tells React to set up a click event listener.
 2. When the button is clicked, React will call the `onClick` event handler that is defined in Square.
