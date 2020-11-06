@@ -6,16 +6,20 @@ function Square(props) {
   return (
     <button
       className="square"
-      onClick={() => alert("click")}
+      onClick={() => setValue("X")}
     >
-      {props.value}
+      {value}
     </button>
   )
 }
 
 function Board() {
+  const [squares, setSquares] = useState(
+    Array(9).fill(null)
+  )
+
   function renderSquare(i) {
-    return <Square value={i} />
+    return <Square value={squares[i]} />
   }
 
   const status = "Next player: X"

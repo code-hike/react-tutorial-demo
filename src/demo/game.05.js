@@ -6,9 +6,9 @@ function Square(props) {
   return (
     <button
       className="square"
-      onClick={() => alert("click")}
+      onClick={() => setValue("X")}
     >
-      {props.value}
+      {value}
     </button>
   )
 }

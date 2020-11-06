@@ -1,14 +1,12 @@
 import { useState } from "react"
 
 function Square(props) {
-  const [value, setValue] = useState(null)
-
   return (
     <button
       className="square"
-      onClick={() => setValue("X")}
+      onClick={() => alert("click")}
     >
-      {value}
+      {props.value}
     </button>
   )
 }
@@ -17,9 +15,7 @@ function Board() {
   function renderSquare(i) {
     return <Square value={i} />
   }
-
   const status = "Next player: X"
-
   return (
     <div>
       <div className="status">{status}</div>

@@ -1,8 +1,10 @@
 export async function getStaticPaths() {
   return {
-    paths: ["01", "02", "03", "04", "20"].map(step => ({
-      params: { step },
-    })),
+    paths: ["01", "02", "03", "04", "05", "06", "20"].map(
+      step => ({
+        params: { step },
+      })
+    ),
     fallback: false,
   }
 }

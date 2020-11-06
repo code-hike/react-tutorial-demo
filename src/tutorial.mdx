@@ -187,18 +187,7 @@ The function returns a _description_ of what you want to see on the screen. Reac
   />
 </Column>
 
-Most React developers use a special syntax called "JSX" which makes these structures easier to write. The `<div />` syntax is transformed at build time to `React.createElement('div')`. The example above is equivalent to:
-
-```javascript
-return React.createElement(
-  "div",
-  { className: "shopping-list" },
-  React.createElement("h1" /* ... h1 children ... */),
-  React.createElement("ul" /* ... ul children ... */)
-)
-```
-
-[See full expanded version.](babel://tutorial-expanded-version)
+Most React developers use a special syntax called "JSX" which makes these structures easier to write. The `<div />` syntax is transformed at build time to `React.createElement('div')`.
 
 If you're curious, `createElement()` is described in more detail in the [API reference](/docs/react-api.html#createelement), but we won't be using it in this tutorial. Instead, we will keep using JSX.
 
@@ -267,6 +256,7 @@ Congratulations! You've just "passed a prop" from a parent Board component to a 
   <Editor
     code="game.03.js"
     file="index.js"
+    focus="1:10"
     lang="jsx"
     height={300}
     id="editor"
@@ -282,101 +272,21 @@ Congratulations! You've just "passed a prop" from a parent Board component to a 
 ### Making an Interactive Component {#making-an-interactive-component}
 
 Let's fill the Square component with an "X" when we click it.
-First, change the button tag that is returned by the Square component to this:
-
-```javascript{3}
-function Square(props) {
-  return (
-    <button
-      className="square"
-      onClick={function () {
-        alert("click")
-      }}
-    >
-      {props.value}
-    </button>
-  )
-}
-```
+First, add the handler `onClick={() => alert('click')}` to the button tag that is returned by the Square component.
 
 If you click on a Square now, you should see an alert in your browser.
 
 > Note
 >
-> To save typing, we will use the [arrow function syntax](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions) for event handlers here and further below:
->
-> ```javascript{3}
-> function Square(props) {
->   return (
->     <button
->       className="square"
->       onClick={() => alert("click")}
->     >
->       {props.value}
->     </button>
->   )
-> }
-> ```
+> To save typing, we use the [arrow function syntax](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions) for event handlers.
 >
 > Notice how with `onClick={() => alert('click')}`, we're passing _a function_ as the `onClick` prop. React will only call this function after a click. Forgetting `() =>` and writing `onClick={alert('click')}` is a common mistake, and would fire the alert every time the component re-renders.
-
-As a next step, we want the Square component to "remember" that it got clicked, and fill it with an "X" mark. To "remember" things, components use **state**.
-
-React components can have state by calling the `useState` function. The `useState` function returns a "state" value and a setter function, both of which should be considered as private to a React component that they're defined in. Let's store the current value of the Square and change it when the Square is clicked.
-
-First, we'll add a `useState` call to the to initialize the state:
-
-```javascript{1,5}
-import React, { useState } from "react"
-
-function Square(props) {
-  // `value` is the state and `setValue` is the setter function
-  const [value, setValue] = useState(null)
-
-  return (
-    <button
-      className="square"
-      onClick={() => alert("click")}
-    >
-      {props.value}
-    </button>
-  )
-}
-```
-
-Now we'll change the Square's return value to display the current state's value when clicked:
-
-- Replace `props.value` with `value` inside the `<button>` tag.
-- Replace the `onClick={...}` event handler with `onClick={() => setValue('X')}`.
-- Put the `className` and `onClick` props on separate lines for better readability.
-
-After these changes, the `<button>` tag that is returned by the Square component looks like this:
-
-```javascript{6-7,9}
-function Square(props) {
-  const [value, setValue] = useState(null)
-
-  return (
-    <button
-      className="square"
-      onClick={() => setValue("X")}
-    >
-      {value}
-    </button>
-  )
-}
-```
-
-By calling `setValue` from an `onClick` handler, we tell React to re-render that Square whenever its `<button>` is clicked. After the update, the Square's `value` will be `'X'`, so we'll see the `X` on the game board. If you click on any Square, an `X` should show up.
-
-When you call a setter function like `setValue` in a component, React automatically updates the child components inside of it too.
-
-**[View the full code at this point](https://codepen.io/kickstartcoding/pen/KKdoajp?editors=0010)**
 
 <Column>
   <Editor
     code="game.04.js"
     file="index.js"
+    focus="2"
     lang="jsx"
     height={300}
     id="editor"
@@ -389,26 +299,59 @@ When you call a setter function like `setValue` in a component, React automatica
   />
 </Column>
 
-### Developer Tools {#developer-tools}
+As a next step, we want the Square component to "remember" that it got clicked, and fill it with an "X" mark. To "remember" things, components use **state**.
 
-The React Devtools extension for [Chrome](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=en) and [Firefox](https://addons.mozilla.org/en-US/firefox/addon/react-devtools/) lets you inspect a React component tree with your browser's developer tools.
+React components can have state by calling the `useState` function. The `useState` function returns a "state" value and a setter function, both of which should be considered as private to a React component that they're defined in. Let's store the current value of the Square and change it when the Square is clicked.
 
-<img
-  src="../images/tutorial/devtools.png"
-  alt="React Devtools"
-  style={{ maxWidth: "100%" }}
-/>
+First, we initialize the state with `const [value, setValue] = useState(null)`.
 
-The React DevTools let you check the props and the state of your React components.
+> Note
+>
+> You may need to import the `useState` function from React with `import { useState } from "react"`.
 
-After installing React DevTools, you can right-click on any element on the page, click "Inspect" to open the developer tools, and the React tabs ("⚛️ Components" and "⚛️ Profiler") will appear as the last tabs to the right. Use "⚛️ Components" to inspect the component tree.
+<Column>
+  <Editor
+    code="game.05.js"
+    file="index.js"
+    focus="3:10"
+    lang="jsx"
+    height={300}
+    id="editor"
+  />
+  <Browser
+    style={{ height: "100%" }}
+    height={200}
+    url="/demo/05"
+    id="browser"
+  />
+</Column>
 
-**However, note there are a few extra steps to get it working with CodePen:**
+Now we'll change the Square's return value to display the current state's value when clicked:
 
-1. Log in or register and confirm your email (required to prevent spam).
-2. Click the "Fork" button.
-3. Click "Change View" and then choose "Debug mode".
-4. In the new tab that opens, the devtools should now have a React tab.
+- Replace `props.value` with `value` inside the `<button>` tag.
+- Replace the `onClick={...}` event handler with `onClick={() => setValue('X')}`.
+
+By calling `setValue` from an `onClick` handler, we tell React to re-render that Square whenever its `<button>` is clicked. After the update, the Square's `value` will be `'X'`, so we'll see the `X` on the game board. If you click on any Square, an `X` should show up.
+
+When you call a setter function like `setValue` in a component, React automatically updates the child components inside of it too.
+
+**[View the full code at this point](https://codepen.io/kickstartcoding/pen/KKdoajp?editors=0010)**
+
+<Column>
+  <Editor
+    code="game.06.js"
+    file="index.js"
+    lang="jsx"
+    height={300}
+    id="editor"
+  />
+  <Browser
+    style={{ height: "100%" }}
+    height={200}
+    url="/demo/06"
+    id="browser"
+  />
+</Column>
 
 ## Completing the Game {#completing-the-game}
 
