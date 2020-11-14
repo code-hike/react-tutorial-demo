@@ -17,7 +17,7 @@ We will build a small game during this tutorial. **You might be tempted to skip 
 
 > Tip
 >
-> This tutorial is designed for people who prefer to **learn by doing**. If you prefer learning concepts from the ground up, check out our [step-by-step guide](/docs/hello-world.html). You might find this tutorial and the guide complementary to each other.
+> This tutorial is designed for people who prefer to **learn by doing**. If you prefer learning concepts from the ground up, check out our [step-by-step guide](https://reactjs.org/docs/hello-world.html). You might find this tutorial and the guide complementary to each other.
 
 The tutorial is divided into several sections:
 
@@ -83,6 +83,7 @@ This is completely optional and not required for this tutorial!
 
 <details>
 
+
 <summary>
   <b>
     Optional: Instructions for following along locally using
@@ -137,6 +138,7 @@ We recommend following [these instructions](https://babeljs.io/docs/editors/) to
 
 </details>
 
+
 ### Help, I'm Stuck! {#help-im-stuck}
 
 If you get stuck, check out the [community support resources](https://reactjs.org/community/support.html). In particular, [Reactiflux Chat](https://discord.gg/reactiflux) is a great way to get help quickly. If you don't receive an answer, or if you remain stuck, please file an issue, and we'll help you out.
@@ -189,7 +191,7 @@ The function returns a _description_ of what you want to see on the screen. Reac
 
 Most React developers use a special syntax called "JSX" which makes these structures easier to write. The `<div />` syntax is transformed at build time to `React.createElement('div')`.
 
-If you're curious, `createElement()` is described in more detail in the [API reference](/docs/react-api.html#createelement), but we won't be using it in this tutorial. Instead, we will keep using JSX.
+If you're curious, `createElement()` is described in more detail in the [API reference](https://reactjs.org/docs/react-api.html#createelement), but we won't be using it in this tutorial. Instead, we will keep using JSX.
 
 JSX comes with the full power of JavaScript. You can put _any_ JavaScript expressions within braces inside JSX. Each React element is a JavaScript object that you can store in a variable or pass around in your program.
 
@@ -251,7 +253,7 @@ In Board's `renderSquare` function, change the code to pass a prop called `value
     lang="jsx"
     height={300}
     id="editor"
-    focus="1:8"
+    focus="1:3,6:8"
   />
   <Browser
     style={{ height: "100%" }}
@@ -273,7 +275,7 @@ Congratulations! You've just "passed a prop" from a parent Board component to a 
   <Editor
     code="game.03.js"
     file="index.js"
-    focus="1:10"
+    focus="1,5,10"
     lang="jsx"
     height={300}
     id="editor"
@@ -303,7 +305,7 @@ If you click on a Square now, you should see an alert in your browser.
   <Editor
     code="game.04.js"
     file="index.js"
-    focus="2"
+    focus="1,2,12"
     lang="jsx"
     height={300}
     id="editor"
@@ -330,7 +332,7 @@ First, we initialize the state with `const [value, setValue] = useState(null)`.
   <Editor
     code="game.05.js"
     file="index.js"
-    focus="3:10"
+    focus="1,2,7,9,12"
     lang="jsx"
     height={300}
     id="editor"
