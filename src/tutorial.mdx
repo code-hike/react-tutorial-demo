@@ -602,91 +602,55 @@ The main benefit of immutability is that it helps you build _pure components_ in
 
 You can learn more about how you can build _pure components_ by reading [Optimizing Performance](https://reactjs.org/docs/optimizing-performance.html#examples).
 
+<Column>
+  <Editor
+    code="game.12.js"
+    focus="9,13,15,17,19,20,31"
+    file="index.js"
+    lang="jsx"
+    height={450}
+    id="editor"
+  />
+  <Browser
+    style={{ height: "100%" }}
+    height={200}
+    url="/demo/06"
+    id="browser"
+  />
+</Column>
+
 ### Taking Turns {#taking-turns}
 
 We now need to fix an obvious defect in our tic-tac-toe game: the "O"s cannot be marked on the board.
 
-We'll set the first move to be "X" by default. We can set this default by adding a new `useState` call:
+We'll set the first move to be "X" by default. We can set this default by adding a new `useState` call.
 
-```javascript{3}
-function Board() {
-  const [squares, setSquares] = useState(Array(9).fill(null));
-  const [xIsNext, setXIsNext] = useState(true);
-```
+Each time a player moves, `xIsNext` (a boolean) will be flipped to determine which player goes next and the game's state will be saved.
 
-Each time a player moves, `xIsNext` (a boolean) will be flipped to determine which player goes next and the game's state will be saved. We'll update the Board's `handleClick` function to flip the value of `xIsNext`:
-
-```javascript{3,5}
-function handleClick(i) {
-  const newSquares = squares.slice()
-  newSquares[i] = xIsNext ? "X" : "O"
-  setSquares(newSquares)
-  setXIsNext(!xIsNext)
-}
-```
+We also update the Board's `handleClick` function to flip the value of `xIsNext`.
 
 With this change, "X"s and "O"s can take turns. Try it!
 
-Let's also change the "status" text in Board so that it displays which player has the next turn:
-
-```javascript{1}
-  const status = 'Next player: ' + (xIsNext ? 'X' : 'O');
-
-  return (
-    // the rest has not changed
-```
-
-After applying these changes, you should have this Board component:
-
-```javascript{3,6-9,21}
-function Board() {
-  const [squares, setSquares] = useState(
-    Array(9).fill(null)
-  )
-  const [xIsNext, setXIsNext] = useState(true)
-
-  function handleClick(i) {
-    const newSquares = squares.slice()
-    newSquares[i] = xIsNext ? "X" : "O"
-    setSquares(newSquares)
-    setXIsNext(!xIsNext)
-  }
-
-  function renderSquare(i) {
-    return (
-      <Square
-        value={squares[i]}
-        onClick={() => handleClick(i)}
-      />
-    )
-  }
-
-  const status = "Next player: " + (xIsNext ? "X" : "O")
-
-  return (
-    <div>
-      <div className="status">{status}</div>
-      <div className="board-row">
-        {renderSquare(0)}
-        {renderSquare(1)}
-        {renderSquare(2)}
-      </div>
-      <div className="board-row">
-        {renderSquare(3)}
-        {renderSquare(4)}
-        {renderSquare(5)}
-      </div>
-      <div className="board-row">
-        {renderSquare(6)}
-        {renderSquare(7)}
-        {renderSquare(8)}
-      </div>
-    </div>
-  )
-}
-```
+We also change the "status" text in Board so that it displays which player has the next turn.
 
 **[View the full code at this point](https://codepen.io/kickstartcoding/pen/MWaVqKe?editors=0010)**
+
+<Column>
+  <Editor
+    code="game.12.js"
+    focus="9,13,15,17,19,20,31"
+    file="index.js"
+    lang="jsx"
+    height={450}
+    id="editor"
+  />
+  <Browser
+    style={{ height: "100%" }}
+    height={200}
+    url="/demo/06"
+    id="browser"
+  />
+</Column>
 
 ### Declaring a Winner {#declaring-a-winner}
 
