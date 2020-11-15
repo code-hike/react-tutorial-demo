@@ -359,7 +359,7 @@ When you call a setter function like `setValue` in a component, React automatica
 <Column>
   <Editor
     code="game.05.js"
-    focus="15:21"
+    focus="14:28"
     file="index.js"
     lang="jsx"
     height={300}
@@ -388,7 +388,7 @@ We may think that Board should just ask each Square for the Square's state. Alth
 <Column>
   <Editor
     code="game.06.js"
-    focus="15:21"
+    focus="14:21"
     file="index.js"
     lang="jsx"
     height={300}
@@ -419,7 +419,7 @@ function renderSquare(i) {
 <Column>
   <Editor
     code="game.07.js"
-    focus="15:21"
+    focus="14:21"
     file="index.js"
     lang="jsx"
     height={300}
@@ -490,10 +490,10 @@ When a Square is clicked, the `onClick` function provided by the Board is called
 <Column>
   <Editor
     code="game.08.js"
-    focus="1:30"
+    focus="1:27"
     file="index.js"
     lang="jsx"
-    height={400}
+    height={450}
     id="editor"
   />
   <Browser
@@ -516,53 +516,24 @@ Here's a review of how this is achieved:
 >
 > The DOM `<button>` element's `onClick` attribute has a special meaning to React because it is a built-in component. For custom components like Square, the naming is up to you. We could give any name to the Square's `onClick` prop or Board's `handleClick` function, and the code would work the same. In React, it's conventional to use `on[Event]` names for props which represent events and `handle[Event]` for the functions which handle the events.
 
+<Column>
+  <Editor
+    code="game.09.js"
+    focus="9,14:18,24,28"
+    file="index.js"
+    lang="jsx"
+    height={450}
+    id="editor"
+  />
+  <Browser
+    style={{ height: "100%" }}
+    height={200}
+    url="/demo/06"
+    id="browser"
+  />
+</Column>
+
 When we try to click a Square, we should get an error because we haven't defined `handleClick` yet. We'll now add `handleClick` to the Board class:
-
-```javascript{4-8}
-function Board() {
-  const [squares, setSquares] = useState(
-    Array(9).fill(null)
-  )
-
-  function handleClick(i) {
-    const newSquares = squares.slice()
-    newSquares[i] = "X"
-    setSquares(newSquares)
-  }
-
-  function renderSquare(i) {
-    return (
-      <Square
-        value={squares[i]}
-        onClick={() => handleClick(i)}
-      />
-    )
-  }
-
-  const status = "Next player: X"
-
-  return (
-    <div>
-      <div className="status">{status}</div>
-      <div className="board-row">
-        {renderSquare(0)}
-        {renderSquare(1)}
-        {renderSquare(2)}
-      </div>
-      <div className="board-row">
-        {renderSquare(3)}
-        {renderSquare(4)}
-        {renderSquare(5)}
-      </div>
-      <div className="board-row">
-        {renderSquare(6)}
-        {renderSquare(7)}
-        {renderSquare(8)}
-      </div>
-    </div>
-  )
-}
-```
 
 **[View the full code at this point](https://codepen.io/kickstartcoding/pen/LYpdBMz?editors=0011)**
 
@@ -572,31 +543,46 @@ Since the Square components no longer maintain state, the Square components rece
 
 Note how in `handleClick`, we call `.slice()` to create a copy of the `squares` array to modify instead of modifying the existing array. We will explain why we create a copy of the `squares` array in the next section.
 
+<Column>
+  <div
+    height={30}
+    style={{ textAlign: "center", lineHeight: "30px" }}
+    id={3}
+  >
+    Data change with mutation:
+  </div>
+  <Editor
+    code="with-mutation.js"
+    file="with-mutation.js"
+    lang="js"
+    height={180}
+    id="with-mutation"
+  />
+  <div
+    height={40}
+    style={{
+      textAlign: "center",
+      lineHeight: "30px",
+      paddingTop: 10,
+    }}
+    id={4}
+  >
+    Data change without mutation:
+  </div>
+  <Editor
+    code="without-mutation.js"
+    file="without-mutation.js"
+    lang="js"
+    height={240}
+    id="without-mutation"
+  />
+</Column>
+
 ### Why Immutability Is Important {#why-immutability-is-important}
 
 In the previous code example, we suggested that you use the `.slice()` method to create a copy of the `squares` array to modify instead of modifying the existing array. We'll now discuss immutability and why immutability is important to learn.
 
 There are generally two approaches to changing data. The first approach is to _mutate_ the data by directly changing the data's values. The second approach is to replace the data with a new copy which has the desired changes.
-
-#### Data Change with Mutation {#data-change-with-mutation}
-
-```javascript
-var player = { score: 1, name: "Jeff" }
-player.score = 2
-// Now player is {score: 2, name: 'Jeff'}
-```
-
-#### Data Change without Mutation {#data-change-without-mutation}
-
-```javascript
-var player = { score: 1, name: "Jeff" }
-
-var newPlayer = Object.assign({}, player, { score: 2 })
-// Now player is unchanged, but newPlayer is {score: 2, name: 'Jeff'}
-
-// Or if you are using object spread syntax proposal, you can write:
-// var newPlayer = {...player, score: 2};
-```
 
 The end result is the same but by not mutating (or changing the underlying data) directly, we gain several benefits described below.
 
@@ -614,7 +600,7 @@ Detecting changes in immutable objects is considerably easier. If the immutable 
 
 The main benefit of immutability is that it helps you build _pure components_ in React. Immutable data can easily determine if changes have been made which helps to determine when a component requires re-rendering.
 
-You can learn more about how you can build _pure components_ by reading [Optimizing Performance](/docs/optimizing-performance.html#examples).
+You can learn more about how you can build _pure components_ by reading [Optimizing Performance](https://reactjs.org/docs/optimizing-performance.html#examples).
 
 ### Taking Turns {#taking-turns}
 
