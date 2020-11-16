@@ -61,6 +61,10 @@ function Board() {
 }
 
 function Game() {
+  const [history, setHistory] = useState([
+    { squares: Array(9).fill(null) },
+  ])
+  const [xIsNext, setXIsNext] = useState(true)
   return (
     <div className="game">
       <div className="game-board">

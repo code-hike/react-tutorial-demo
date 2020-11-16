@@ -663,7 +663,7 @@ We will call `calculateWinner(squares)` in the Board component to check if a pla
 <Column>
   <Editor
     code="game.15.js"
-    focus="15:18,23,34:40,44"
+    focus="15:18,23,34:37,41"
     file="index.js"
     lang="jsx"
     height={450}
@@ -686,19 +686,24 @@ We also change the Board's `handleClick` function to return early by ignoring a 
 Congratulations! You now have a working tic-tac-toe game. And you've just learned the basics of React too. So _you're_ probably the real winner here.
 
 <Column>
+  <div
+    height={40}
+    style={{
+      textAlign: "center",
+      lineHeight: "30px",
+      paddingTop: 10,
+    }}
+    id={5}
+  >
+    The history array represents all board states
+  </div>
   <Editor
-    code="game.15.js"
-    focus="15:18,23,34:40,44"
-    file="index.js"
-    lang="jsx"
-    height={450}
-    id="editor"
-  />
-  <Browser
-    style={{ height: "100%" }}
-    height={200}
-    url="/demo/06"
-    id="browser"
+    code="history.js"
+    focus="3:29"
+    file="history.js"
+    lang="js"
+    height={500}
+    id="history"
   />
 </Column>
 
@@ -712,57 +717,26 @@ If we mutated the `squares` array, implementing time travel would be very diffic
 
 However, we used `slice()` to create a new copy of the `squares` array after every move, and [treated it as immutable](#why-immutability-is-important). This will allow us to store every past version of the `squares` array, and navigate between the turns that have already happened.
 
-We'll store the past `squares` arrays in another array called `history`. The `history` array represents all board states, from the first to the last move, and has a shape like this:
-
-```javascript
-history = [
-  // Before first move
-  {
-    squares: [
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-    ],
-  },
-  // After first move
-  {
-    squares: [
-      null,
-      null,
-      null,
-      null,
-      "X",
-      null,
-      null,
-      null,
-      null,
-    ],
-  },
-  // After second move
-  {
-    squares: [
-      null,
-      null,
-      null,
-      null,
-      "X",
-      null,
-      null,
-      null,
-      "O",
-    ],
-  },
-  // ...
-]
-```
+We'll store the past `squares` arrays in another array called `history`. The `history` array represents all board states, from the first to the last move.
 
 Now we need to decide which component should own the `history` state.
+
+<Column>
+  <Editor
+    code="game.16.js"
+    focus="61,62:65,77"
+    file="index.js"
+    lang="jsx"
+    height={450}
+    id="editor"
+  />
+  <Browser
+    style={{ height: "100%" }}
+    height={200}
+    url="/demo/06"
+    id="browser"
+  />
+</Column>
 
 ### Lifting State Up, Again {#lifting-state-up-again}
 
@@ -770,30 +744,85 @@ We'll want the top-level Game component to display a list of past moves. It will
 
 Placing the `history` state into the Game component lets us remove the `squares` state from its child Board component. Just like we ["lifted state up"](#lifting-state-up) from the Square component into the Board component, we are now lifting it up from the Board into the top-level Game component. This gives the Game component full control over the Board's data, and lets it instruct the Board to render previous turns from the `history`.
 
-First, we'll set up the initial state for the Game component with `useState` calls:
+First, we'll set up the initial state for the Game component with `useState` calls.
 
-```javascript{2-3}
-function Game() {
-  const [history, setHistory] = useState([
-    { squares: Array(9).fill(null) },
-  ])
-  const [xIsNext, setXIsNext] = useState(true)
+<Column>
+  <Editor
+    code="game.17.js"
+    focus="67:71,76,79"
+    file="index.js"
+    lang="jsx"
+    height={450}
+    id="editor"
+  />
+  <Browser
+    style={{ height: "100%" }}
+    height={200}
+    url="/demo/06"
+    id="browser"
+  />
+</Column>
 
-  return (
-    <div className="game">
-      <div className="game-board">
-        <Board />
-      </div>
-      <div className="game-info">
-        <div>{/* status */}</div>
-        <ol>{/* TODO */}</ol>
-      </div>
-    </div>
-  )
-}
-```
+We'll update the Game component to use the most recent history entry to determine and display the game's status.
+
+<Column>
+  <Editor
+    code="game.18.js"
+    focus="73:82,89"
+    file="index.js"
+    lang="jsx"
+    height={450}
+    id="editor"
+  />
+  <Browser
+    style={{ height: "100%" }}
+    height={200}
+    url="/demo/06"
+    id="browser"
+  />
+</Column>
+
+Finally, we need to move the `handleClick` function from the Board component to the Game component. We also need to modify `handleClick` because the Game component's state is structured differently. Within the Game's `handleClick` function, we concatenate new history entries onto `history`.
+
+> Note
+>
+> Unlike the array `push()` method you might be more familiar with, the `concat()` method doesn't mutate the original array, so we prefer it.
+
+<Column>
+  <Editor
+    code="game.18.js"
+    focus="9:42"
+    file="index.js"
+    lang="jsx"
+    height={450}
+    id="editor"
+  />
+  <Browser
+    style={{ height: "100%" }}
+    height={200}
+    url="/demo/06"
+    id="browser"
+  />
+</Column>
 
 Next, we'll have the Board component receive `squares` and `onClick` props from the Game component. Since we now have a single click handler in Board for many Squares, we'll need to pass the location of each Square into the `onClick` handler to indicate which Square was clicked. Here are the required steps to transform the Board component:
+
+<Column>
+  <Editor
+    code="game.19.js"
+    focus="9:42"
+    file="index.js"
+    lang="jsx"
+    height={450}
+    id="editor"
+  />
+  <Browser
+    style={{ height: "100%" }}
+    height={200}
+    url="/demo/06"
+    id="browser"
+  />
+</Column>
 
 - Delete the `useState` calls in Board.
 - Replace `squares[i]` with `props.squares[i]` in Board's `renderSquare`.
@@ -801,135 +830,28 @@ Next, we'll have the Board component receive `squares` and `onClick` props from 
 
 The Board component now looks like this:
 
-```javascript{15,16}
-function Board(props) {
-  function handleClick(i) {
-    if (calculateWinner(squares) || squares[i]) {
-      return
-    }
-    const newSquares = squares.slice()
-    newSquares[i] = xIsNext ? "X" : "O"
-    setSquares(newSquares)
-    setXIsNext(!xIsNext)
-  }
-
-  function renderSquare(i) {
-    return (
-      <Square
-        value={props.squares[i]}
-        onClick={() => props.onClick(i)}
-      />
-    )
-  }
-
-  const status = "Next player: " + (xIsNext ? "X" : "O")
-
-  return (
-    <div>
-      <div className="status">{status}</div>
-      <div className="board-row">
-        {renderSquare(0)}
-        {renderSquare(1)}
-        {renderSquare(2)}
-      </div>
-      <div className="board-row">
-        {renderSquare(3)}
-        {renderSquare(4)}
-        {renderSquare(5)}
-      </div>
-      <div className="board-row">
-        {renderSquare(6)}
-        {renderSquare(7)}
-        {renderSquare(8)}
-      </div>
-    </div>
-  )
-}
-```
-
-We'll update the Game component to use the most recent history entry to determine and display the game's status:
-
-```javascript{5-13,18-19,24}
-function Game() {
-  const [history, setHistory] = useState([
-    { squares: Array(9).fill(null) },
-  ])
-  const [xIsNext, setXIsNext] = useState(true)
-
-  const current = history[history.length - 1]
-  const winner = calculateWinner(current.squares)
-
-  let status
-  if (winner) {
-    status = "Winner: " + winner
-  } else {
-    status = "Next player: " + (xIsNext ? "X" : "O")
-  }
-
-  return (
-    <div className="game">
-      <div className="game-board">
-        <Board
-          squares={current.squares}
-          onClick={i => handleClick(i)}
-        />
-      </div>
-      <div className="game-info">
-        <div>{status}</div>
-        <ol>{/* TODO */}</ol>
-      </div>
-    </div>
-  )
-}
-```
-
 Since the Game component is now rendering the game's status, we can remove the corresponding code from the Board. After refactoring, the Board's `return` looks like this:
-
-```js{1-4}
-return (
-  <div>
-    <div className="board-row">
-      {renderSquare(0)}
-      {renderSquare(1)}
-      {renderSquare(2)}
-    </div>
-    <div className="board-row">
-      {renderSquare(3)}
-      {renderSquare(4)}
-      {renderSquare(5)}
-    </div>
-    <div className="board-row">
-      {renderSquare(6)}
-      {renderSquare(7)}
-      {renderSquare(8)}
-    </div>
-  </div>
-)
-```
-
-Finally, we need to move the `handleClick` function from the Board component to the Game component. We also need to modify `handleClick` because the Game component's state is structured differently. Within the Game's `handleClick` function, we concatenate new history entries onto `history`.
-
-```javascript{2-4,10-12}
-function handleClick(i) {
-  const current = history[history.length - 1]
-  const squares = current.squares.slice()
-  if (calculateWinner(squares) || squares[i]) {
-    return
-  }
-  squares[i] = xIsNext ? "X" : "O"
-
-  setHistory(history.concat([{ squares: squares }]))
-  setXIsNext(!xIsNext)
-}
-```
-
-> Note
->
-> Unlike the array `push()` method you might be more familiar with, the `concat()` method doesn't mutate the original array, so we prefer it.
 
 At this point, the Board component only needs the `renderSquare` function. The game's state and the `handleClick` function should be in the Game component.
 
 **[View the full code at this point](https://codepen.io/kickstartcoding/pen/WNQzgJw?editors=0010)**
+
+<Column>
+  <Editor
+    code="game.19.js"
+    focus="9:42"
+    file="index.js"
+    lang="jsx"
+    height={450}
+    id="editor"
+  />
+  <Browser
+    style={{ height: "100%" }}
+    height={200}
+    url="/demo/06"
+    id="browser"
+  />
+</Column>
 
 ### Showing the Past Moves {#showing-the-past-moves}
 
