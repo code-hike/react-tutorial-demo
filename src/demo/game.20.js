@@ -116,7 +116,6 @@ function calculateWinner(squares) {
     [0, 4, 8],
     [2, 4, 6],
   ]
-
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i]
     if (
@@ -127,7 +126,6 @@ function calculateWinner(squares) {
       return squares[a]
     }
   }
-
   return null
 }
 
