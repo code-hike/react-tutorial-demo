@@ -839,7 +839,7 @@ At this point, the Board component only needs the `renderSquare` function. The g
 <Column>
   <Editor
     code="game.20.js"
-    focus="9:42"
+    focus="39:49"
     file="index.js"
     lang="jsx"
     height={450}
@@ -866,47 +866,24 @@ const numbers = [1, 2, 3]
 const doubled = numbers.map(x => x * 2) // [2, 4, 6]
 ```
 
-Using the `map` method, we can map our history of moves to React elements representing buttons on the screen, and display a list of buttons to "jump" to past moves.
+<Column>
+  <Editor
+    code="game.21.js"
+    focus="62:71,83"
+    file="index.js"
+    lang="jsx"
+    height={450}
+    id="editor"
+  />
+  <Browser
+    style={{ height: "100%" }}
+    height={200}
+    url="/demo/06"
+    id="browser"
+  />
+</Column>
 
-Let's `map` over the `history` in the Game:
-
-```javascript{4-13,32}
-const current = history[history.length - 1]
-const winner = calculateWinner(current.squares)
-
-const moves = history.map((step, move) => {
-  const desc = move
-    ? "Go to move #" + move
-    : "Go to game start"
-  return (
-    <li>
-      <button onClick={() => jumpTo(move)}>{desc}</button>
-    </li>
-  )
-})
-
-let status
-if (winner) {
-  status = "Winner: " + winner
-} else {
-  status = "Next player: " + (xIsNext ? "X" : "O")
-}
-
-return (
-  <div className="game">
-    <div className="game-board">
-      <Board
-        squares={current.squares}
-        onClick={i => handleClick(i)}
-      />
-    </div>
-    <div className="game-info">
-      <div>{status}</div>
-      <ol>{moves}</ol>
-    </div>
-  </div>
-)
-```
+Using the `map` method, we can map our history of moves to React elements representing buttons on the screen, and display a list of buttons to "jump" to past moves. We `map` over the `history` in the Game.
 
 **[View the full code at this point](https://codepen.io/kickstartcoding/pen/qBOoMJJ)**
 
@@ -916,6 +893,23 @@ For each move in the tic-tac-toe game's history, we create a list item `<li>` wh
 > Each child in an array or iterator should have a unique "key" prop. Check the JSX in the "Game" component.
 
 Let's discuss what the above warning means.
+
+<Column>
+  <Editor
+    code="game.21.js"
+    focus="62:71,83"
+    file="index.js"
+    lang="jsx"
+    height={450}
+    id="editor"
+  />
+  <Browser
+    style={{ height: "100%" }}
+    height={200}
+    url="/demo/06"
+    id="browser"
+  />
+</Column>
 
 ### Picking a Key {#picking-a-key}
 
@@ -954,50 +948,55 @@ If no key is specified, React will present a warning and use the array index as 
 
 Keys do not need to be globally unique; they only need to be unique between components and their siblings.
 
+<Column>
+  <Editor
+    code="game.22.js"
+    focus="62,67,71"
+    file="index.js"
+    lang="jsx"
+    height={450}
+    id="editor"
+  />
+  <Browser
+    style={{ height: "100%" }}
+    height={200}
+    url="/demo/06"
+    id="browser"
+  />
+</Column>
+
 ### Implementing Time Travel {#implementing-time-travel}
 
 In the tic-tac-toe game's history, each past move has a unique ID associated with it: it's the sequential number of the move. The moves are never re-ordered, deleted, or inserted in the middle, so it's safe to use the move index as a key.
 
-In the Game component, we can add the key as `<li key={move}>` and React's warning about keys should disappear:
-
-```js{6}
-const moves = history.map((step, move) => {
-  const desc = move
-    ? "Go to move #" + move
-    : "Go to game start"
-  return (
-    <li key={move}>
-      <button onClick={() => jumpTo(move)}>{desc}</button>
-    </li>
-  )
-})
-```
+In the Game component, we can add the key as `<li key={move}>` and React's warning about keys should disappear.
 
 **[View the full code at this point](https://codepen.io/kickstartcoding/pen/eYpMLxy?editors=0010)**
 
-Clicking any of the list item's buttons throws an error because the `jumpTo` function is undefined. Before we implement `jumpTo`, we'll add `stepNumber` to the Game component's state to indicate which step we're currently viewing.
+Clicking any of the list item's buttons throws an error because the `jumpTo` function is undefined.
+
+<Column>
+  <Editor
+    code="game.24.js"
+    focus="46,52:55,57:61,66:69,71"
+    file="index.js"
+    lang="jsx"
+    height={450}
+    id="editor"
+  />
+  <Browser
+    style={{ height: "100%" }}
+    height={200}
+    url="/demo/06"
+    id="browser"
+  />
+</Column>
+
+Before we implement `jumpTo`, we'll add `stepNumber` to the Game component's state to indicate which step we're currently viewing.
 
 First, add `stepNumber: 0` to the initial state in Game:
 
-```js{3}
-function Game() {
-  const [history, setHistory] = useState([{ squares: Array(9).fill(null) }]);
-  const [stepNumber, setStepNumber] = useState(0);
-  const [xIsNext, setXIsNext] = useState(true);
-```
-
 Next, we'll define the `jumpTo` function in Game to update that `stepNumber`. We also set `xIsNext` to true if the number that we're changing `stepNumber` to is even:
-
-```javascript{5-8}
-function handleClick(i) {
-  // this function has not changed
-}
-
-function jumpTo(step) {
-  setStepNumber(step)
-  setXIsNext(step % 2 === 0)
-}
-```
 
 We will now make a few changes to the Game's `handleClick` function which fires when you click on a square.
 
@@ -1005,35 +1004,26 @@ The `stepNumber` state we've added reflects the move displayed to the user now. 
 
 We will also replace reading `history` with `history.slice(0, stepNumber + 1)`. This ensures that if we "go back in time" and then make a new move from that point, we throw away all the "future" history that would now become incorrect.
 
-```javascript{2,11}
-function handleClick(i) {
-  const currentHistory = history.slice(0, stepNumber + 1)
-  const currentStep =
-    currentHistory[currentHistory.length - 1]
-  const squares = currentStep.squares.slice()
-  if (calculateWinner(squares) || squares[i]) {
-    return
-  }
-  squares[i] = xIsNext ? "X" : "O"
-
-  setHistory(currentHistory.concat([{ squares: squares }]))
-  setStepNumber(currentHistory.length)
-  setXIsNext(!xIsNext)
-}
-```
-
-Finally, we will modify the Game component from always rendering the last move to rendering the currently selected move according to `stepNumber`:
-
-```javascript{1}
-const current = history[stepNumber]
-const winner = calculateWinner(current.squares)
-
-// the rest has not changed
-```
-
 If we click on any step in the game's history, the tic-tac-toe board should immediately update to show what the board looked like after that step occurred.
 
 **[View the full code at this point](https://codepen.io/kickstartcoding/pen/YzyawOo?editors=0010)**
+
+<Column>
+  <Editor
+    code="game.24.js"
+    focus="46,52:55,57:61,66:69,71"
+    file="index.js"
+    lang="jsx"
+    height={450}
+    id="editor"
+  />
+  <Browser
+    style={{ height: "100%" }}
+    height={200}
+    url="/demo/06"
+    id="browser"
+  />
+</Column>
 
 ### Wrapping Up {#wrapping-up}
 
@@ -1057,4 +1047,4 @@ If you have extra time or want to practice your new React skills, here are some 
 5. When someone wins, highlight the three squares that caused the win.
 6. When no one wins, display a message about the result being a draw.
 
-Throughout this tutorial, we touched on React concepts including elements, components, props, and state. For a more detailed explanation of each of these topics, check out [the rest of the documentation](/docs/hello-world.html). To learn more about defining components, check out the [`React.Component` API reference](/docs/react-component.html).
+Throughout this tutorial, we touched on React concepts including elements, components, props, and state. For a more detailed explanation of each of these topics, check out [the rest of the documentation](https://reactjs.org/docs/hello-world.html). To learn more about defining components, check out the [`React.Component` API reference](https://reactjs.org/docs/react-component.html).
