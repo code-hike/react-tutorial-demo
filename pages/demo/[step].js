@@ -1,10 +1,11 @@
 export async function getStaticPaths() {
+  // from { step: "01" } to { step: "24" }
+  const paths = Array.from({ length: 24 }, (_, i) => ({
+    params: { step: (i + 1).toString().padStart(2, "0") },
+  }))
+
   return {
-    paths: ["01", "02", "03", "04", "05", "06", "20"].map(
-      step => ({
-        params: { step },
-      })
-    ),
+    paths: paths,
     fallback: false,
   }
 }
