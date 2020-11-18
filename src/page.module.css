@@ -5,7 +5,7 @@
 }
 
 .article main {
-  margin: 50px 0;
+  margin: 50px 0 200px;
   width: 508px;
 }
 
@@ -104,6 +104,14 @@
   color: #1a1a1a;
   padding-left: 20px;
   list-style: disc;
+}
+
+.article ol {
+  margin-top: 20px;
+  font-size: 16px;
+  color: #1a1a1a;
+  padding-left: 20px;
+  list-style: decimal;
 }
 
 .article li {
