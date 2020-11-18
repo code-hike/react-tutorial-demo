@@ -35,7 +35,7 @@ You don't have to complete all of the sections at once to get the value out of t
   <Browser
     style={{ height: "100%" }}
     height={300}
-    url="/demo/24"
+    loadUrl="/demo/24"
     id="final"
     zoom={1.2}
   />
@@ -233,7 +233,7 @@ The Square component renders a single `<button>` and the Board renders 9 squares
   <Browser
     style={{ height: "100%" }}
     height={200}
-    url="/demo/01"
+    loadUrl="/demo/01"
     id="browser"
   />
 </Column>
@@ -258,7 +258,7 @@ In Board's `renderSquare` function, change the code to pass a prop called `value
   <Browser
     style={{ height: "100%" }}
     height={200}
-    url="/demo/02"
+    loadUrl="/demo/02"
     id="browser"
   />
 </Column>
@@ -283,7 +283,7 @@ Congratulations! You've just "passed a prop" from a parent Board component to a 
   <Browser
     style={{ height: "100%" }}
     height={200}
-    url="/demo/03"
+    loadUrl="/demo/03"
     id="browser"
   />
 </Column>
@@ -313,7 +313,7 @@ If you click on a Square now, you should see an alert in your browser.
   <Browser
     style={{ height: "100%" }}
     height={200}
-    url="/demo/04"
+    loadUrl="/demo/04"
     id="browser"
   />
 </Column>
@@ -340,7 +340,7 @@ First, we initialize the state with `const [value, setValue] = useState(null)`.
   <Browser
     style={{ height: "100%" }}
     height={200}
-    url="/demo/05"
+    loadUrl="/demo/05"
     id="browser"
   />
 </Column>
@@ -368,7 +368,7 @@ When you call a setter function like `setValue` in a component, React automatica
   <Browser
     style={{ height: "100%" }}
     height={200}
-    url="/demo/05"
+    loadUrl="/demo/05"
     id="browser"
   />
 </Column>
@@ -397,7 +397,7 @@ We may think that Board should just ask each Square for the Square's state. Alth
   <Browser
     style={{ height: "100%" }}
     height={200}
-    url="/demo/06"
+    loadUrl="/demo/06"
     id="browser"
   />
 </Column>
@@ -428,7 +428,7 @@ function renderSquare(i) {
   <Browser
     style={{ height: "100%" }}
     height={200}
-    url="/demo/07"
+    loadUrl="/demo/07"
     id="browser"
   />
 </Column>
@@ -451,7 +451,7 @@ We will now use the prop passing mechanism again. We will modify the Board to in
   <Browser
     style={{ height: "100%" }}
     height={200}
-    url="/demo/07"
+    loadUrl="/demo/07"
     id="browser"
   />
 </Column>
@@ -474,7 +474,7 @@ Instead, we'll pass down a function from the Board to the Square, and we'll have
   <Browser
     style={{ height: "100%" }}
     height={200}
-    url="/demo/08"
+    loadUrl="/demo/08"
     id="browser"
   />
 </Column>
@@ -499,7 +499,7 @@ When a Square is clicked, the `onClick` function provided by the Board is called
   <Browser
     style={{ height: "100%" }}
     height={200}
-    url="/demo/08"
+    loadUrl="/demo/08"
     id="browser"
   />
 </Column>
@@ -528,7 +528,7 @@ Here's a review of how this is achieved:
   <Browser
     style={{ height: "100%" }}
     height={200}
-    url="/demo/09"
+    loadUrl="/demo/09"
     id="browser"
   />
 </Column>
@@ -614,7 +614,7 @@ You can learn more about how you can build _pure components_ by reading [Optimiz
   <Browser
     style={{ height: "100%" }}
     height={200}
-    url="/demo/12"
+    loadUrl="/demo/12"
     id="browser"
   />
 </Column>
@@ -647,7 +647,7 @@ We also change the "status" text in Board so that it displays which player has t
   <Browser
     style={{ height: "100%" }}
     height={200}
-    url="/demo/13"
+    loadUrl="/demo/13"
     id="browser"
   />
 </Column>
@@ -672,7 +672,7 @@ We will call `calculateWinner(squares)` in the Board component to check if a pla
   <Browser
     style={{ height: "100%" }}
     height={200}
-    url="/demo/15"
+    loadUrl="/demo/15"
     id="browser"
   />
 </Column>
@@ -733,7 +733,7 @@ Now we need to decide which component should own the `history` state.
   <Browser
     style={{ height: "100%" }}
     height={200}
-    url="/demo/16"
+    loadUrl="/demo/16"
     id="browser"
   />
 </Column>
@@ -758,7 +758,7 @@ First, we'll set up the initial state for the Game component with `useState` cal
   <Browser
     style={{ height: "100%" }}
     height={200}
-    url="/demo/17"
+    loadUrl="/demo/17"
     id="browser"
   />
 </Column>
@@ -777,7 +777,7 @@ We'll update the Game component to use the most recent history entry to determin
   <Browser
     style={{ height: "100%" }}
     height={200}
-    url="/demo/18"
+    loadUrl="/demo/18"
     id="browser"
   />
 </Column>
@@ -800,7 +800,7 @@ Finally, we need to move the `handleClick` function from the Board component to 
   <Browser
     style={{ height: "100%" }}
     height={200}
-    url="/demo/19"
+    loadUrl="/demo/19"
     id="browser"
   />
 </Column>
@@ -819,7 +819,7 @@ Next, we'll have the Board component receive `squares` and `onClick` props from 
   <Browser
     style={{ height: "100%" }}
     height={200}
-    url="/demo/20"
+    loadUrl="/demo/20"
     id="browser"
   />
 </Column>
@@ -848,7 +848,7 @@ At this point, the Board component only needs the `renderSquare` function. The g
   <Browser
     style={{ height: "100%" }}
     height={200}
-    url="/demo/20"
+    loadUrl="/demo/20"
     id="browser"
   />
 </Column>
@@ -878,7 +878,7 @@ const doubled = numbers.map(x => x * 2) // [2, 4, 6]
   <Browser
     style={{ height: "100%" }}
     height={200}
-    url="/demo/21"
+    loadUrl="/demo/21"
     id="browser"
   />
 </Column>
@@ -906,7 +906,7 @@ Let's discuss what the above warning means.
   <Browser
     style={{ height: "100%" }}
     height={200}
-    url="/demo/21"
+    loadUrl="/demo/21"
     id="browser"
   />
 </Column>
@@ -960,7 +960,7 @@ Keys do not need to be globally unique; they only need to be unique between comp
   <Browser
     style={{ height: "100%" }}
     height={200}
-    url="/demo/22"
+    loadUrl="/demo/22"
     id="browser"
   />
 </Column>
@@ -987,7 +987,7 @@ Clicking any of the list item's buttons throws an error because the `jumpTo` fun
   <Browser
     style={{ height: "100%" }}
     height={200}
-    url="/demo/24"
+    loadUrl="/demo/24"
     id="browser"
   />
 </Column>
@@ -1020,7 +1020,7 @@ If we click on any step in the game's history, the tic-tac-toe board should imme
   <Browser
     style={{ height: "100%" }}
     height={200}
-    url="/demo/24"
+    loadUrl="/demo/24"
     id="browser"
   />
 </Column>

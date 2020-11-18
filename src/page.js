@@ -123,11 +123,11 @@ function getColumnSteps(kids) {
           stepsProp = Array.from(steps, _ => ({}))
           stepsProp[stepIndex] = props
         }
-        const defaultBrowserProps = {}
         return {
           element: (
             <MiniBrowser
-              {...defaultBrowserProps}
+              prependOrigin={true}
+              url="/demo"
               steps={stepsProp}
             />
           ),
