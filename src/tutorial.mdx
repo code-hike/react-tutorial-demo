@@ -380,8 +380,6 @@ Currently, each Square component maintains the game's state. To check for a winn
 
 We may think that Board should just ask each Square for the Square's state. Although this approach is possible in React, we discourage it because the code becomes difficult to understand, susceptible to bugs, and hard to refactor. Instead, the best approach is to store the game's state in the parent Board component instead of in each Square. The Board component can tell each Square what to display by passing a prop, [just like we did when we passed a number to each Square](#passing-data-through-props).
 
-**To collect data from multiple children, or to have two child components communicate with each other, you need to declare the shared state in their parent component instead. The parent component can pass the state back down to the children by using props; this keeps the child components in sync with each other and with the parent component.**
-
 <Column>
   <Editor
     code="game.06.js"
@@ -399,19 +397,13 @@ We may think that Board should just ask each Square for the Square's state. Alth
   />
 </Column>
 
+**To collect data from multiple children, or to have two child components communicate with each other, you need to declare the shared state in their parent component instead. The parent component can pass the state back down to the children by using props; this keeps the child components in sync with each other and with the parent component.**
+
 Lifting state into a parent component is common when React components are refactored -- let's take this opportunity to try it out.
 
-Add a `useState` call to the Board and set a state value called `squares` to start out with an array of 9 nulls corresponding to the 9 squares.
+We add a `useState` call to the Board and set a state value called `squares` to start out with an array of 9 nulls corresponding to the 9 squares.
 
 When we fill the board in later, the `squares` array will look something like `["O", null, "X", "X", "X", "O", "O", null, null]`.
-
-The Board's `renderSquare` function currently looks like this:
-
-```javascript
-function renderSquare(i) {
-  return <Square value={i} />
-}
-```
 
 <Column>
   <Editor
@@ -513,6 +505,8 @@ Here's a review of how this is achieved:
 >
 > The DOM `<button>` element's `onClick` attribute has a special meaning to React because it is a built-in component. For custom components like Square, the naming is up to you. We could give any name to the Square's `onClick` prop or Board's `handleClick` function, and the code would work the same. In React, it's conventional to use `on[Event]` names for props which represent events and `handle[Event]` for the functions which handle the events.
 
+When we try to click a Square, we should get an error because we haven't defined `handleClick` yet.
+
 <Column>
   <Editor
     code="game.09.js"
@@ -530,11 +524,11 @@ Here's a review of how this is achieved:
   />
 </Column>
 
-When we try to click a Square, we should get an error because we haven't defined `handleClick` yet. We'll now add `handleClick` to the Board class:
-
-**[View the full code at this point](https://codepen.io/kickstartcoding/pen/LYpdBMz?editors=0011)**
+We'll now add `handleClick` to the Board class.
 
 After these changes, we're again able to click on the Squares to fill them, the same as we had before. However, now the state is stored in the Board component instead of the individual Square components. When the Board's state changes, the Square components re-render automatically. Keeping the state of all squares in the Board component will allow it to determine the winner in the future.
+
+**[View the full code at this point](https://codepen.io/kickstartcoding/pen/LYpdBMz?editors=0011)**
 
 Since the Square components no longer maintain state, the Square components receive values from the Board component and inform the Board component when they're clicked. In React terms, the Square components are now **controlled components**. The Board has full control over them.
 
@@ -720,33 +714,8 @@ Now we need to decide which component should own the `history` state.
 
 <Column>
   <Editor
-    code="game.16.js"
-    focus="61,62:65,77"
-    file="index.js"
-    lang="jsx"
-    height={450}
-    id="editor"
-  />
-  <Browser
-    style={{ height: "100%" }}
-    height={200}
-    loadUrl="/demo/16"
-    id="browser"
-  />
-</Column>
-
-### Lifting State Up, Again {#lifting-state-up-again}
-
-We'll want the top-level Game component to display a list of past moves. It will need access to the `history` to do that, so we will place the `history` state in the top-level Game component.
-
-Placing the `history` state into the Game component lets us remove the `squares` state from its child Board component. Just like we ["lifted state up"](#lifting-state-up) from the Square component into the Board component, we are now lifting it up from the Board into the top-level Game component. This gives the Game component full control over the Board's data, and lets it instruct the Board to render previous turns from the `history`.
-
-First, we'll set up the initial state for the Game component with `useState` calls.
-
-<Column>
-  <Editor
     code="game.17.js"
-    focus="67:71,76,79"
+    focus="61,62:65,67:71,76,79"
     file="index.js"
     lang="jsx"
     height={450}
@@ -760,7 +729,15 @@ First, we'll set up the initial state for the Game component with `useState` cal
   />
 </Column>
 
-We'll update the Game component to use the most recent history entry to determine and display the game's status.
+### Lifting State Up, Again {#lifting-state-up-again}
+
+We'll want the top-level Game component to display a list of past moves. It will need access to the `history` to do that, so we will place the `history` state in the top-level Game component.
+
+Placing the `history` state into the Game component lets us remove the `squares` state from its child Board component. Just like we ["lifted state up"](#lifting-state-up) from the Square component into the Board component, we are now lifting it up from the Board into the top-level Game component. This gives the Game component full control over the Board's data, and lets it instruct the Board to render previous turns from the `history`.
+
+First, we set up the initial state for the Game component with `useState` calls.
+
+We also update the Game component to use the most recent history entry to determine and display the game's status.
 
 <Column>
   <Editor
@@ -802,7 +779,14 @@ Finally, we need to move the `handleClick` function from the Board component to 
   />
 </Column>
 
-Next, we'll have the Board component receive `squares` and `onClick` props from the Game component. Since we now have a single click handler in Board for many Squares, we'll need to pass the location of each Square into the `onClick` handler to indicate which Square was clicked. Here are the required steps to transform the Board component:
+Next, we'll have the Board component receive `squares` and `onClick` props from the Game component.
+
+We can now remove a few things from this component:
+
+- The `useState` calls in Board.
+- The `handleClick` function.
+- The winner calculation.
+- The status.
 
 <Column>
   <Editor
@@ -821,15 +805,9 @@ Next, we'll have the Board component receive `squares` and `onClick` props from 
   />
 </Column>
 
-- Delete the `useState` calls in Board.
-- Replace `squares[i]` with `props.squares[i]` in Board's `renderSquare`.
-- Replace `handleClick(i)` with `props.onClick(i)` in Board's `renderSquare`.
+Since we now have a single click handler in Board for many Squares, we'll need to pass the location of each Square into the `onClick` handler to indicate which Square was clicked.
 
-The Board component now looks like this:
-
-Since the Game component is now rendering the game's status, we can remove the corresponding code from the Board. After refactoring, the Board's `return` looks like this:
-
-At this point, the Board component only needs the `renderSquare` function. The game's state and the `handleClick` function should be in the Game component.
+At this point, the Board component only needs the `renderSquare` function. The game's state and the `handleClick` function are in the Game component.
 
 **[View the full code at this point](https://codepen.io/kickstartcoding/pen/WNQzgJw?editors=0010)**
 
@@ -881,8 +859,6 @@ const doubled = numbers.map(x => x * 2) // [2, 4, 6]
 </Column>
 
 Using the `map` method, we can map our history of moves to React elements representing buttons on the screen, and display a list of buttons to "jump" to past moves. We `map` over the `history` in the Game.
-
-**[View the full code at this point](https://codepen.io/kickstartcoding/pen/qBOoMJJ)**
 
 For each move in the tic-tac-toe game's history, we create a list item `<li>` which contains a button `<button>`. The button has a `onClick` handler which calls a function called `jumpTo()`. We haven't implemented the `jumpTo()` function yet. For now, we should see a list of the moves that have occurred in the game and a warning in the developer tools console that says:
 
@@ -974,8 +950,29 @@ Clicking any of the list item's buttons throws an error because the `jumpTo` fun
 
 <Column>
   <Editor
+    code="game.23.js"
+    focus="44,46,52:55"
+    file="index.js"
+    lang="jsx"
+    height={450}
+    id="editor"
+  />
+  <Browser
+    style={{ height: "100%" }}
+    height={200}
+    loadUrl="/demo/23"
+    id="browser"
+  />
+</Column>
+
+First we add `stepNumber` to the Game component's state to indicate which step we're currently viewing. We use `stepNumber:0` for the initial state in Game.
+
+Next, we define the `jumpTo` function in Game to update that `stepNumber`. We also set `xIsNext` to true if the number that we're changing `stepNumber` to is even.
+
+<Column>
+  <Editor
     code="game.24.js"
-    focus="46,52:55,57:61,66:69,71"
+    focus="57:61,66:69,71"
     file="index.js"
     lang="jsx"
     height={450}
@@ -989,17 +986,11 @@ Clicking any of the list item's buttons throws an error because the `jumpTo` fun
   />
 </Column>
 
-Before we implement `jumpTo`, we'll add `stepNumber` to the Game component's state to indicate which step we're currently viewing.
-
-First, add `stepNumber: 0` to the initial state in Game:
-
-Next, we'll define the `jumpTo` function in Game to update that `stepNumber`. We also set `xIsNext` to true if the number that we're changing `stepNumber` to is even:
-
-We will now make a few changes to the Game's `handleClick` function which fires when you click on a square.
+Now we make a few changes to the Game's `handleClick` function which fires when you click on a square.
 
 The `stepNumber` state we've added reflects the move displayed to the user now. After we make a new move, we need to update `stepNumber` by calling `setStepNumber(history.length)`. This ensures we don't get stuck showing the same move after a new one has been made.
 
-We will also replace reading `history` with `history.slice(0, stepNumber + 1)`. This ensures that if we "go back in time" and then make a new move from that point, we throw away all the "future" history that would now become incorrect.
+We also replace reading `history` with `history.slice(0, stepNumber + 1)`. This ensures that if we "go back in time" and then make a new move from that point, we throw away all the "future" history that would now become incorrect.
 
 If we click on any step in the game's history, the tic-tac-toe board should immediately update to show what the board looked like after that step occurred.
 

@@ -42,10 +42,10 @@ function Game() {
   const [history, setHistory] = useState([
     { squares: Array(9).fill(null) },
   ])
-  const [stepNumber, setStepNumber] = useState(0)
   const [xIsNext, setXIsNext] = useState(true)
+  const [stepNumber, setStepNumber] = useState(0)
 
-  const current = history[history.length - 1]
+  const current = history[stepNumber]
   const winner = calculateWinner(current.squares)
   let status = winner
     ? "Winner: " + winner
