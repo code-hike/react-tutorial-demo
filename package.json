@@ -1,11 +1,11 @@
 {
   "name": "react-tutorial-demo",
-  "version": "0.0.0-15",
+  "version": "0.0.0-6a7ffe8",
   "dependencies": {
-    "@code-hike/mini-browser": "0.0.0-15",
-    "@code-hike/mini-editor": "0.0.0-15",
-    "@code-hike/smooth-column": "0.0.0-15",
-    "@code-hike/scroller": "0.0.0-15",
+    "@code-hike/mini-browser": "0.0.0-6a7ffe8",
+    "@code-hike/mini-editor": "0.0.0-6a7ffe8",
+    "@code-hike/smooth-column": "0.0.0-6a7ffe8",
+    "@code-hike/scroller": "0.0.0-6a7ffe8",
     "@emotion/core": "10.0.7",
     "@mdx-js/loader": "^1.6.5",
     "@mdx-js/react": "^1.0.6",
